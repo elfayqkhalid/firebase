@@ -11,12 +11,12 @@ class _ServiceState extends State<Service> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Android ATC Services'),
+          title: Text('Universiapolis Services'),
         ),
         body: Center(
           child: Container(
             child: Text(
-              'Welcome to Android ATC',
+              'Welcome to Universiapolis',
               style: TextStyle(
                 fontSize: 20.0,
               ),

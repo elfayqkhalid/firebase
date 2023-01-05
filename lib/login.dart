@@ -1,9 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'new_account.dart';
 import 'login.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -11,24 +9,12 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
-  // text editing controller
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
 
   @override
 
-  // sign user in method
-  void signUserIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: usernameController.text.trim(),
-        password: passwordController.text.trim());
-  }
 
-  void dispose() {
-    super.dispose();
-    usernameController.dispose();
-    passwordController.dispose();
-  }
+
+
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -71,7 +57,7 @@ class _Login extends State<Login> {
                       SizedBox(
                         width: 220.0,
                         child: TextField(
-                          controller: usernameController,
+
                           onChanged: (value) {},
                           style: TextStyle(fontSize: 20, color: Colors.blue),
                           keyboardType: TextInputType.emailAddress,
@@ -101,7 +87,7 @@ class _Login extends State<Login> {
                       SizedBox(
                         width: 220.0,
                         child: TextField(
-                          controller: passwordController,
+
                           onChanged: (value) {},
 //obscureText: true,
                           style: TextStyle(fontSize: 20, color: Colors.blue),
@@ -123,9 +109,7 @@ class _Login extends State<Login> {
                           "Login",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
-                        onPressed: () {
-                          signUserIn();
-                        },
+                        onPressed: () {},
                       ),
                     ),
                   ),
