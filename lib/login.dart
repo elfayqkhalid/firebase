@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'new_account.dart';
 import 'login.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -9,12 +11,29 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
+  late String email;
+  late String password;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // text editing controller
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
 
+  // sign user in method
+  void signUserIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: usernameController.text.trim(),
+        password: passwordController.text.trim());
 
+  }
 
-
+  void dispose() {
+    super.dispose();
+    usernameController.dispose();
+    passwordController.dispose();
+  }
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +52,7 @@ class _Login extends State<Login> {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      '_Login',
+                      'Login',
                       style: TextStyle(
                         fontSize: 40,
                         color: Colors.blue,
@@ -57,8 +76,10 @@ class _Login extends State<Login> {
                       SizedBox(
                         width: 220.0,
                         child: TextField(
-
-                          onChanged: (value) {},
+                          controller: usernameController,
+                          onChanged: (value1) {
+                            email = value1;
+                          },
                           style: TextStyle(fontSize: 20, color: Colors.blue),
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.done,
@@ -87,8 +108,10 @@ class _Login extends State<Login> {
                       SizedBox(
                         width: 220.0,
                         child: TextField(
-
-                          onChanged: (value) {},
+                          controller: passwordController,
+                          onChanged: (value2) {
+                            password = value2;
+                          },
 //obscureText: true,
                           style: TextStyle(fontSize: 20, color: Colors.blue),
                           textInputAction: TextInputAction.done,
@@ -109,7 +132,18 @@ class _Login extends State<Login> {
                           "Login",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            //signUserIn();
+                            final User = await _auth.signInWithEmailAndPassword(
+                                email: usernameController.text.trim(), password: passwordController.text.trim());
+                            if (User != null) {
+                              Navigator.pushNamed(context, 'Service');
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
                       ),
                     ),
                   ),

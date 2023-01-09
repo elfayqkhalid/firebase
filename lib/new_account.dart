@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NewAccount extends StatefulWidget {
@@ -6,13 +7,24 @@ class NewAccount extends StatefulWidget {
 }
 
 class _NewAccountState extends State<NewAccount> {
+  late String email;
+  late String password;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool showSpinner = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('New Account '),
-        ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            centerTitle: true,
+            title: Text("new user account")),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -48,7 +60,9 @@ class _NewAccountState extends State<NewAccount> {
                       SizedBox(
                         width: 220.0,
                         child: TextField(
-                          onChanged: (value) {},
+                          onChanged: (value1) {
+                            email = value1;
+                          },
                           style: TextStyle(fontSize: 20, color: Colors.blue),
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.done,
@@ -77,7 +91,9 @@ class _NewAccountState extends State<NewAccount> {
                       SizedBox(
                         width: 220.0,
                         child: TextField(
-                          onChanged: (value) {},
+                          onChanged: (value2) {
+                            password = value2;
+                          },
 //obscureText: true,
                           style: TextStyle(fontSize: 20, color: Colors.blue),
                           textInputAction: TextInputAction.done,
@@ -98,7 +114,25 @@ class _NewAccountState extends State<NewAccount> {
                           "Create",
                           style: TextStyle(fontSize: 20, color: Colors.white),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          setState(() {
+                            showSpinner = true;
+                          });
+                          try {
+                            final newUser =
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: email,
+                                    password: password);
+                            if (newUser != null) {
+                              Navigator.pushNamed(context, 'Home');
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
+                          setState(() {
+                            showSpinner = false;
+                          });
+                        },
                       ),
                     ),
                   ),
