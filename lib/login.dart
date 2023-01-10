@@ -39,8 +39,14 @@ class _Login extends State<Login> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Login'),
-        ),
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
+            centerTitle: true,
+            title: Text("Login")),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
